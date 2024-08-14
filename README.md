@@ -11,4 +11,4 @@ This is a practical application assignment as part of the UC Berkeley Haas AI-ML
 
 ## Business Understanding:
 
-
+Comparing_Classifiers_Portugese_Bank/CRISP-DM-BANK.pdf
