@@ -59,5 +59,39 @@ The dataset is broken into 4 sections:
 - The attribute `pdays` has a value of 999 indicating that the client was not previously contacted
 - The attribute `duration` highly affects the output target (e.g., if duration=0 then y='no'). Yet, the duration is not known before a call is performed. Also, after the end of the call y is obviously known. Thus, this input should only be included for benchmark purposes and should be discarded if the intention is to have a realistic predictive model.
 
+## Exploratory Data Analysis
+
+There are a total of 13 attributes that have less than or equal to 12 unique values. These attributes are:
+```Column          Count
+contact         2
+default         3
+housing         3
+loan            3
+poutcome        3
+marital         4
+day_of_week     5
+education       8
+previous        8
+month           10
+emp_var_rate    10
+nr_employed     11
+job             12
+```
+**Day of the Week**
+Looking at the `day_of_week`, we find that it is equally distributed. There is no uniqueness that differentiates any specific day of the week. We can derive that the data will not have any weightage on the model prediction. This column will be removed from the dataframe and not be part of further analysis
+
+<img width="748" alt="image" src="https://github.com/user-attachments/assets/86f2a8f4-4dce-4230-a7c2-349a9522f61b">
+
+**Contact**
+The contact values are `cellular` and `telephone`. We find that 64% of the customers have `cellular` compared to 36% with regular telephone (landline) service. Further analysis shows that this celular data has a correlation to customers accepting the marketing promotion.
+
+<img width="593" alt="image" src="https://github.com/user-attachments/assets/772c9b8a-fed2-4c05-b5fc-08385f2bd81a">
+
+**Default**
+One of the attribute checks if the customer has their credit in default. 
+<img width="596" alt="image" src="https://github.com/user-attachments/assets/226c6f5a-8219-4f83-9469-e5f2562d5ffa">
+
+
+<img width="703" alt="image" src="https://github.com/user-attachments/assets/8ac42fb2-70e0-46b6-bf8b-193309ef5f8b">
 
 
