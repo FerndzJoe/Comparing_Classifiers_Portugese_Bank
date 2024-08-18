@@ -129,6 +129,13 @@ With the new set of numerical attributes, I ran the Pearson Correlation. Below i
 ## Model Evaluation
 
 Using the refined dataset, I split this into 80% for training and 20% for testing.
+To create standardized results for each of the model, I created a series of functions and called these functions for each of the models.
+
+**Functions created:**
+- **Print Performance:** This will print the performance results of each model. It will print the accuracy, recall, precision, f1 scores.
+- **Print Confusion Matrix:** This will print the confusion matrix and the associated values of True Positive, True Negative, False Positive, and False Negative
+- **Print ROC-AUC Scores:** This will plot the ROC-AUC Curve and print the ROC-AUC score.
+- **Evaluate Function:** This will use either the default setting or the hyperparameter to call the model. Perform the model fit, predict, and calculate and print the processing time, performance, confusion matrix, and the ROC-AUC curve and scores.
 
 ### Model Comparison
 
@@ -137,6 +144,10 @@ I created a baseline of the model using `Dummy Classifer` and then evaluated the
 The Confusion Matrix for the Dummy Classifier (as expected) is shown below.
 
 <img width="596" alt="image" src="https://github.com/user-attachments/assets/5d942717-1f6b-4db6-b006-2688d69df0b8">
+
+The ROC-AUC Curve for the Dummy Classifier will be a straight line in the middle as shown below.
+
+<img width="877" alt="image" src="https://github.com/user-attachments/assets/b97b730f-7ef0-407b-8a89-a8ecdf288fce">
 
 ### Initial Model Comparison : Without Hyperparameter Tuning (using Default Settings of each model)
 
