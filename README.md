@@ -225,4 +225,33 @@ I was able to drop the following features before hyperparameter tuning
 
 With the further refined dataset, below are the results for the four models:
 
+#### Results from Model Evaluation using Hyperparameter Tuning for each Model
 
+<img width="1398" alt="image" src="https://github.com/user-attachments/assets/c4b6517a-44bc-43ba-b280-ee25a986201d">
+
+#### Confusion Matrix using Hyperparameter Tuning for each Model
+
+The associated Confusion Matrix for these models are as shown below.
+
+![Optimized Confusion Matrix Comparison for 4 Models](https://github.com/user-attachments/assets/5c62c363-dd05-4670-9950-47f8eb22a601)
+
+#### ROC AUC Curve using Hyperparameter Tuning for each Model
+
+The associated ROC AUC Curve for each of these models are as shown below.
+
+![Optimized ROC-AUC Curve Comparison for 4 Models](https://github.com/user-attachments/assets/0ddc75dc-d685-4831-aab4-3b0c9304e3d9)
+
+#### Observation:
+Adding hyperparameters, I was able to see a much better result for all 4 models. 
+- The accuracy ratio improved from **0.89** to **0.91 and 0.92** with the ROC-AOC score pushing from **0.7x** to **0.91 and 0.92**.
+- However, as we can see, the hyperparameters comes with a cost.
+- The time to process this takes longer with SVM taking more than **30 minutes** to process compared to earlier process within **30 seconds**.
+
+## Recommendation:
+Use Logistic Regression with hyperparameters as the precision is higher, recall is higher, and ROC AUC score is also higher. The overall time it takes to process Logistic Regression is much lower than all others making it the best option among the 4 models.
+
+## Future Questions:
+A few questions we can ask about the dataset and the campaign are:
+1. How many days before the campaign should the bank contact the customers. The duration of the call and the pdays and previous days in the current dataset is not providing enough information to determine the success of the campaign
+2. While we see a negative correlation around employment variation rate, it does not translate to any meaningful decisions.
+3. There is a good correlation between the duration of the call and contact type. Customers with cellphones show higher reach. The campaign can focus on improving the success by focusing on customers with cellphones
