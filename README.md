@@ -77,21 +77,152 @@ emp_var_rate    10
 nr_employed     11
 job             12
 ```
-**Day of the Week**
+#### Day of the Week
 Looking at the `day_of_week`, we find that it is equally distributed. There is no uniqueness that differentiates any specific day of the week. We can derive that the data will not have any weightage on the model prediction. This column will be removed from the dataframe and not be part of further analysis
 
 <img width="748" alt="image" src="https://github.com/user-attachments/assets/86f2a8f4-4dce-4230-a7c2-349a9522f61b">
 
-**Contact**
+#### Contact
 The contact values are `cellular` and `telephone`. We find that 64% of the customers have `cellular` compared to 36% with regular telephone (landline) service. Further analysis shows that this celular data has a correlation to customers accepting the marketing promotion.
 
 <img width="593" alt="image" src="https://github.com/user-attachments/assets/772c9b8a-fed2-4c05-b5fc-08385f2bd81a">
 
-**Default**
-One of the attribute checks if the customer has their credit in default. 
+#### Default
+One of the attribute is to checks if the customer has their credit in default. 
 <img width="596" alt="image" src="https://github.com/user-attachments/assets/226c6f5a-8219-4f83-9469-e5f2562d5ffa">
 
 
 <img width="703" alt="image" src="https://github.com/user-attachments/assets/8ac42fb2-70e0-46b6-bf8b-193309ef5f8b">
+
+As you can see from the above charts, the atrribute `default` has some correlation to customers accepting the marketing promotion.
+
+#### Pair Plot of all Categorical attributes with Target Variable
+
+Here's a view of the pair plot when compared to the target variables
+
+![Pair Plot Portugese Bank](https://github.com/user-attachments/assets/a54c925a-dc38-412e-a2e3-8b90ea1e0733)
+
+## Feature Engineering
+
+Now that we have a good idea of all the attributes, let's review the categorical attributes and see if we can encode them.
+
+#### Encoding Categorical Attributes
+We have a few attributes that can be encoded. To reduce the complexity, I converted these using Label Encoding.
+
+contact         2
+default         3
+housing         3
+loan            3
+poutcome        3
+marital         4
+education       8
+month           10
+job             12
+y               2 (Target Variable)
+
+#### Pearson's Correlation of all attributes
+
+With the new set of numerical attributes, I ran the Pearson Correlation. Below is the result of the correlation between all the numerical variables.
+
+![Pearsons Correlation Portugese Bank](https://github.com/user-attachments/assets/f00126e7-a9a0-4735-b30a-0844a80aa3a6)
+
+## Model Evaluation
+
+Using the refined dataset, I split this into 80% for training and 20% for testing.
+
+### Model Comparison
+
+I created a baseline of the model using `Dummy Classifer` and then evaluated the following models without any hyperparameter tuning.
+
+The Confusion Matrix for the Dummy Classifier (as expected) is shown below.
+
+<img width="596" alt="image" src="https://github.com/user-attachments/assets/5d942717-1f6b-4db6-b006-2688d69df0b8">
+
+### Initial Model Comparison : Without Hyperparameter Tuning (using Default Settings of each model)
+
+- **Dummy Classifier**
+- **Logistic Regression**
+- **Decision Tree Classifier**
+- **K Nearest Neighbor Classifier**
+- **Support Vector Machines**
+
+Based on the analysis of the refined dataset, the results from these models were as folows:
+
+#### Results from Model Evaluation using Default Settings for each Model
+
+<img width="1390" alt="image" src="https://github.com/user-attachments/assets/32687bc7-d847-4171-9d1b-f64c7d7dd710">
+
+#### Confusion Matrix using Default Settings for each Model
+
+The associated Confusion Matrix for these models (excluded Dummy Classifier) are as shown below. 
+
+![Confusion Matrix Comparison for 4 Models](https://github.com/user-attachments/assets/f21e0700-a6b3-4efb-9450-9257ec53eda2)
+
+#### ROC AUC Curve using Default Settings for each Model
+
+The associated ROC AUC Curve for each of these models (excluding Dummy Classifier) are as shown below.
+
+![ROC-AUC Curve Comparison for 4 Models](https://github.com/user-attachments/assets/1a1a8d48-67e9-4d45-ab17-3af2d0660840)
+
+#### Observation:
+- Based on the results shown above, we can see that Logistic Regression and Support Vector Machines have a very good accuracy score of 0.91  
+- However, we also see that Support Vector Machines takes 30 seconds to process 7186 records while Logistic Regression takes only 0.15 seconds for 7136 records.  
+- Decision Tree Classifer and K Nearest Neighbor have a fairly lower accuracy score with Decision Tree Classifier getting fewer items correct.  
+- Looking at the performance, K Nearest Neighbor has the best time while maintaining a competitive accuracy score. 
+- Overall, I would recommend Logistic Regresion as the choice of model if we were to scale the test to a bigger dataset as the accuracy score of 0.91 and the ROC-AUC curve is 0.93
+
+#### Opportunity:
+- Improve the Recall Score as they are ranging from 0.30 (SVM) to 0.52 (Decision Tree)
+
+### Improved Model Comparison : With Hyperparameter Tuning
+
+#### Feature Engineering before model comparison
+
+During the initial run, I found that some of the features do not have a strong correlation and can be eliminated. This can improve the performance when we tune the hyperparameters.
+
+#### Features Dropped
+I was able to drop the following features before hyperparameter tuning
+
+- **housing** : The ratio of customers accepting an offer is a constant 11% irrespective of whether they have a housing loan or not
+- **loan** : Similarly, the ratio of customers accepting an offer is a constant 11% irrespective of whether they have a personal loan or not
+
+#### Hyperparameter Selected:
+
+- **LogisticRegression:**
+
+```
+    'Logistic Regression': {
+        'classifier__C': [0.01, 0.1, 1, 10, 100],
+        'classifier__penalty': ['l2'],
+        'classifier__solver': ['lbfgs', 'saga']
+```
+
+- **Decision Tree Classifier:**
+
+```
+    'Decision Tree Classifier': {
+        'classifier__criterion': ['gini', 'entropy'],
+        'classifier__max_depth': [None, 10, 20, 30, 40, 50],
+        'classifier__min_samples_split': [2, 5, 10]
+```
+- **K Nearest Neighbor Classifier:**
+
+```
+    'K Nearest Neighbor Classifier': {
+        'classifier__n_neighbors': [3, 5, 7, 9, 11],
+        'classifier__weights': ['uniform', 'distance'],
+        'classifier__algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute']
+```
+- **Support Vector Machines:**
+
+```
+    'Support Vector Machines': {
+        'classifier__C': [0.1, 1, 10, 100],
+        'classifier__kernel': ['linear', 'rbf'],
+        'classifier__gamma': ['scale', 'auto']
+```
+
+
+With the further refined dataset, below are the results for the four models:
 
 
